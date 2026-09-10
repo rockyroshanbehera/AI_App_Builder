@@ -1,5 +1,12 @@
-# Full Stack Agentic App Builder with Next JS, Supabase, Gemini AI, Cline SDK, Shadcn UI Tutorial 🔥🔥
+# 🔥 AI App Builder — Full Stack Agentic App Builder
 
+**Next.js · Supabase · Gemini AI · Cline SDK · Shadcn UI**
+
+A full-stack AI-powered React app generator where users describe what they want to build, and the AI writes production-ready React code that renders live in the browser — just like Bolt.new or Lovable.
+
+Users get a live Sandpack preview, persistent chat history, image upload support, and a credit-based subscription system. Pro users can trigger a Cline AI agent that autonomously improves the generated app file by file.
+
+---
 
 ## 📋 Table of Contents
 
@@ -9,14 +16,19 @@
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Database Setup](#database-setup)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Overview
 
-A full-stack AI-powered React app generator where users describe what they want to build, and the AI writes production-ready React code that renders live in the browser — just like Bolt.new or Lovable.
+A full-stack AI-powered React app generator where users describe what they want to build, and the AI writes production-ready React code that renders live in the browser.
 
-Users get a live Sandpack preview, a persistent chat history, image upload support, and a credit-based subscription system. Pro users can trigger a Cline AI agent that autonomously improves the generated app file by file.
+- 💬 Chat-driven code generation with a live Sandpack preview
+- 🖼️ Image upload support, injected directly into prompts
+- 🤖 An autonomous "Improve with AI" agent (Cline SDK) that edits files one at a time
+- 💳 A credit-based subscription system (Free / Starter / Pro)
 
 ---
 
@@ -25,10 +37,10 @@ Users get a live Sandpack preview, a persistent chat history, image upload suppo
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 15 (App Router, TypeScript) |
-| Auth + Billing | Clerk |
+| Auth + Billing | [Clerk](https://clerk.com/) |
 | Database | Supabase (via Prisma) |
 | Image Storage | Supabase Storage |
-| Rate Limiting | Arcjet |
+| Rate Limiting | [Arcjet](https://arcjet.com/) |
 | AI Model | Gemini 3.5 Flash |
 | AI Agent (Improve) | Cline SDK (`@cline/sdk`) |
 | Code Editor + Preview | Sandpack (`@codesandbox/sandpack-react`) |
@@ -39,57 +51,57 @@ Users get a live Sandpack preview, a persistent chat history, image upload suppo
 
 ## Features
 
-### Landing Page
+### 🏠 Landing Page
 - Prompt textarea with rotating placeholders and suggestion chips
 - Live browser mockup preview
 - Features section, how-it-works steps, pricing table (Clerk `<PricingTable />`)
 - Dark theme throughout
 
-### Auth (Clerk)
+### 🔐 Auth (Clerk)
 - Google OAuth sign-in
 - User auto-created in Supabase on first login with free credits
-- Plan detection via Clerk `has()` — credits top-up on plan upgrade
+- Plan detection via Clerk `has()` — credits top up on plan upgrade
 - Pricing modal accessible from the header credit badge
 
-### Workspace
+### 🧩 Workspace
 - Split-panel layout: Chat (left) + Code/Preview (right)
 - Full persistent chat history stored in Supabase
 - AI responses rendered with `react-markdown` and a live blinking cursor during streaming
 - Image upload via paperclip → Supabase Storage → CDN URL injected into prompt
 - Auto-scroll, hidden scrollbar, user avatars
 
-### AI Code Generation (`/api/gen-ai-code`)
+### 🤖 AI Code Generation (`/api/gen-ai-code`)
 - Gemini 3.5 Flash with `thinkingConfig` enabled
 - Streams Gemini thought labels as live status steps in the chat panel
 - Returns strict JSON: `{ assistantMessage, title, files, dependencies }`
 - npm registry validation — hallucinated packages silently filtered
 - Atomic DB transaction: workspace upsert + credit deduction in one operation
 
-### Improve with AI — Cline SDK (`/api/improve`) — Pro + Starter
+### 🛠️ Improve with AI — Cline SDK (`/api/improve`) — *Pro + Starter*
 - Cline `Agent` with two tools: `update_file` + `done_improving`
 - Agent streams reasoning live into the chat panel as it works
 - Files patched one at a time via SSE — Sandpack updates without remounting
 - `lifecycle: { completesRun: true }` ends the agent cleanly after all files are done
 - Gated to Starter and Pro plans
 
-### Fix with AI
+### 🩹 Fix with AI
 - Sandpack listens for runtime + compile errors
-- Error banner appears in Preview tab with "Fix with AI" button
+- Error banner appears in Preview tab with a "Fix with AI" button
 - Injects the error + context into Gemini and triggers a new generation
 
-### Code Panel (Sandpack)
+### 📝 Code Panel (Sandpack)
 - Preview and Code tabs — auto-switches to Preview after each generation
 - Built-in CodeMirror editor (read-only), file explorer
 - Tailwind v3 loaded via CDN inside the preview iframe
 - Smart re-keying: `SandpackProvider` only remounts when file paths change, not contents
 - Export to ZIP — downloads a ready-to-run CRA project with `package.json`
 
-### Projects Page
+### 📁 Projects Page
 - Grid of all past workspaces with title, first prompt preview, message count, timestamp
 - Delete project with confirmation modal
 - Empty state with CTA
 
-### Token / Credit System
+### 🪙 Token / Credit System
 - Free: 10 credits · Starter: 50 · Pro: 150
 - Cost: 1 credit per generation or improve
 - Checked client-side and server-side (402 response as backup)
@@ -100,21 +112,20 @@ Users get a live Sandpack preview, a persistent chat history, image upload suppo
 ## Getting Started
 
 ### Prerequisites
-
 - Node.js 22+
-- A Supabase project
-- A Clerk application
-- A Google AI Studio API key (Gemini)
+- A [Supabase](https://supabase.com/) project
+- A [Clerk](https://clerk.com/) application
+- A [Google AI Studio](https://aistudio.google.com/) API key (Gemini)
 
 ### Installation
 
 ```bash
-git clone https://github.com/roadsidecoder/buildai.git
-cd buildai
+git clone https://github.com/rockyroshanbehera/AI_App_Builder.git
+cd AI_App_Builder
 npm install
 ```
 
-Generate the Prisma client:
+Generate the Prisma client and push the schema:
 
 ```bash
 npx prisma generate
@@ -133,7 +144,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Environment Variables
 
-Create a `.env.local` file in the root:
+Create a `.env.local` file in the project root:
 
 ```env
 # Clerk
@@ -178,6 +189,38 @@ Supabase Storage bucket: `workspace-images` — public, organized by `userId/wor
 
 ---
 
-## 🌟 Show your support
+## Project Structure
+
+```
+AI_App_Builder/
+├── actions/            # Server actions
+├── app/                # Next.js App Router pages & API routes
+├── components/          # React components (UI, workspace, landing page)
+├── lib/                 # Shared utilities, DB client, integrations
+├── prisma/              # Prisma schema & migrations
+├── public/              # Static assets
+├── types/               # TypeScript type definitions
+├── AGENTS.md             # Notes for AI coding agents
+├── CLAUDE.md              # Notes for Claude Code
+├── components.json
+├── next.config.ts
+├── prisma.config.ts
+├── proxy.ts
+└── vercel.json
+```
+
+---
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome. Feel free to open an issue or submit a pull request.
+
+## License
+
+No license has been specified yet for this repository. Please check with the repository owner before reuse.
+
+---
+
+### 🌟 Show your support
 
 Give a ⭐ if this project helped you learn something new!
