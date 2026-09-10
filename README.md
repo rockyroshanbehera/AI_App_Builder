@@ -219,8 +219,6 @@ Contributions, issues, and feature requests are welcome. Feel free to open an is
 
 No license has been specified yet for this repository. Please check with the repository owner before reuse.
 
----
 
-### 🌟 Show your support
 
 Give a ⭐ if this project helped you learn something new!
