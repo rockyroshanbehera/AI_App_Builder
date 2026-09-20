@@ -6,7 +6,15 @@ A full-stack AI-powered React app generator where users describe what they want 
 
 Users get a live Sandpack preview, persistent chat history, image upload support, and a credit-based subscription system. Pro users can trigger a Cline AI agent that autonomously improves the generated app file by file.
 
+## 🚀 Deployment
 
+<p align="center">
+  <img src="assets/deployment.png" alt="AI App Builder Deployment" width="900">
+</p>
+
+<p align="center">
+  <img src="assets/deployment1.png" alt="AI App Builder Second View" width="900">
+</p>
 
 
 ## 🎥 Demo
